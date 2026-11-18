@@ -1,0 +1,6 @@
+import fs from 'node:fs';import path from 'node:path';import {spawnSync,spawn} from 'node:child_process';import {fileURLToPath} from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));process.chdir(root);
+function runNode(file,args=[]){const r=spawnSync(process.execPath,[file,...args],{stdio:'inherit'});if(r.status!==0)process.exit(r.status||1);}
+if(!fs.existsSync('node_modules/express/package.json')){const bundled=path.resolve(path.dirname(process.execPath),'../node_modules/pnpm/bin/pnpm.cjs');if(fs.existsSync(bundled))runNode(bundled,['install','--store-dir',path.join(root,'.pnpm-store'),'--config.node-linker=hoisted','--config.package-import-method=copy']);else{const r=spawnSync(process.platform==='win32'?'npm.cmd':'npm',['install'],{stdio:'inherit',shell:process.platform==='win32'});if(r.status!==0){console.error('Установите Node.js 22+ с npm, затем выполните npm install.');process.exit(1);}}}
+if(!fs.existsSync('dist/index.html'))runNode('node_modules/vite/bin/vite.js',['build','--config','frontend/vite.config.js']);
+const child=spawn(process.execPath,['backend/server.js'],{stdio:'inherit'});process.on('SIGINT',()=>child.kill());child.on('exit',code=>process.exit(code||0));

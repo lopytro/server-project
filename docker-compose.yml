@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      MONGO_URI: mongodb://mongo:27017/moscow-event
+      CLIENT_ORIGIN: http://localhost:3001
+      HOST: 0.0.0.0
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - files:/app/backend/data
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  mongo:
+  files:
