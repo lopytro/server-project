@@ -1,0 +1,1 @@
+import {defineConfig} from 'vite';import vue from '@vitejs/plugin-vue';import path from 'node:path';export default defineConfig({root:path.resolve('frontend'),envDir:path.resolve('.'),plugins:[vue()],server:{host:'127.0.0.1',port:5173,proxy:{'/api':'http://127.0.0.1:3001','/socket.io':{target:'http://127.0.0.1:3001',ws:true}}},build:{outDir:'../dist',emptyOutDir:true}});
