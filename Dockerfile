@@ -4,7 +4,6 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 COPY . .
-RUN npm run build
 ENV HOST=0.0.0.0 PORT=3001 PDF_FONT=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
 EXPOSE 3001
 CMD ["node","backend/server.js"]
