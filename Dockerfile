@@ -6,4 +6,4 @@ RUN npm install
 COPY . .
 ENV HOST=0.0.0.0 PORT=3001 PDF_FONT=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
 EXPOSE 3001
-CMD ["node","backend/server.js"]
+CMD ["node", "start.js"]
